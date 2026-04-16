@@ -290,12 +290,12 @@ export default function App() {
     if (isSuccess === 'true' && packType) {
       
       if (user.isAnonymous) {
-        alert("⚠️ QUASE LÁ! O teu pagamento foi detetado e está guardado neste link.\n\nPor favor, clica em 'Sign in with Google' na barra do lado esquerdo para receberes os teus créditos na conta certa.");
+        alert("⚠️ ALMOST THERE! Your payment was detected and is saved in this link.\n\nPlease click 'Sign in with Google' on the left sidebar to receive your credits in the right account.");
         return;
       }
 
       if (!sessionId || sessionId === '{CHECKOUT_SESSION_ID}') {
-        alert("⚠️ ERRO DE LIGAÇÃO STRIPE: O Stripe não enviou o número do recibo seguro.");
+        alert("⚠️ STRIPE CONNECTION ERROR: Stripe didn't send a secure receipt number.");
         window.history.replaceState({}, document.title, window.location.pathname);
         return;
       }
@@ -317,7 +317,7 @@ export default function App() {
               setIsVerifyingPayment(false);
               return;
             } else {
-              alert("🔒 Pagamento já usado noutra conta.");
+              alert("🔒 Payment already used on another account.");
               setIsVerifyingPayment(false);
               return;
             }
@@ -339,14 +339,14 @@ export default function App() {
             } else {
               await updateDoc(userDocRef, { downloadsLeft: increment(10) });
             }
-            setPaymentType('Pack de 10 Imagens');
+            setPaymentType('10 Image Pack');
           } else if (packType === 'premium') {
             if (!userSnap.exists()) {
               await setDoc(userDocRef, { downloadsLeft: 0, isPremium: true });
             } else {
               await updateDoc(userDocRef, { isPremium: true });
             }
-            setPaymentType('Acesso Premium Ilimitado');
+            setPaymentType('Premium Unlimited Access');
           }
 
           setShowSuccessModal(true);
@@ -354,8 +354,8 @@ export default function App() {
           setIsVerifyingPayment(false);
 
         } catch (e) {
-          console.error("Erro:", e);
-          alert("Erro ao validar pagamento");
+          console.error("Error:", e);
+          alert("Error validating payment.");
           setIsVerifyingPayment(false);
         }
       };
@@ -680,11 +680,11 @@ export default function App() {
       if (data.url) {
         window.location.href = data.url; // Redireciona para o Stripe gerado
       } else {
-        alert("Erro ao iniciar pagamento. Verifica as definições.");
+        alert("Error initiating payment. Please check your settings.");
       }
     } catch (err) {
       console.error(err);
-      alert("Erro de comunicação ao ligar ao pagamento.");
+      alert("Communication error when connecting to payment.");
     }
   };
 
@@ -703,7 +703,7 @@ export default function App() {
         }
       }
     } catch (e) {
-      console.error("Erro ao descontar crédito", e);
+      console.error("Error deducting credit", e);
     }
   };
 
@@ -796,8 +796,8 @@ export default function App() {
       {isVerifyingPayment && (
         <div className="fixed inset-0 bg-white/80 backdrop-blur-md z-[110] flex flex-col items-center justify-center">
            <RefreshCw className="animate-spin w-12 h-12 text-indigo-600 mb-4" />
-           <p className="text-xl font-black text-slate-800">A validar pagamento seguro...</p>
-           <p className="text-sm text-slate-500">Isto demora apenas alguns segundos.</p>
+           <p className="text-xl font-black text-slate-800">Validating secure payment...</p>
+           <p className="text-sm text-slate-500">This only takes a few seconds.</p>
         </div>
       )}
 
@@ -939,7 +939,7 @@ export default function App() {
                   signOut(auth);
                 }} 
                 className="text-gray-400 hover:text-red-500 transition-colors p-2 hover:bg-red-50 rounded-lg"
-                title="Terminar Sessão"
+                title="Sign Out"
               >
                 <LogOut className="w-5 h-5" />
               </button>
@@ -1060,21 +1060,21 @@ export default function App() {
             <div className="w-24 h-24 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-8 shadow-inner">
               <PartyPopper className="w-12 h-12" />
             </div>
-            <h2 className="text-3xl font-black text-slate-900 mb-2">Muito Obrigado! 🥳</h2>
+            <h2 className="text-3xl font-black text-slate-900 mb-2">Thank You! 🎉</h2>
             <p className="text-slate-500 font-medium mb-8">
-              O teu pagamento foi processado com sucesso. O teu plano <span className="text-indigo-600 font-bold">{paymentType}</span> já está ativo na tua conta!
+              Your payment was successfully processed. Your plan <span className="text-indigo-600 font-bold">{paymentType}</span> is now active on your account!
             </p>
             <div className="bg-slate-50 rounded-2xl p-6 mb-8 border border-slate-100">
                <div className="flex items-center justify-center space-x-2 text-green-600 font-bold">
                  <CheckCircle2 className="w-5 h-5" />
-                 <span>Créditos Atualizados (Guardados para sempre!)</span>
+                 <span>Your credits have been updated (saved forever!)</span>
                </div>
             </div>
             <button 
               onClick={() => setShowSuccessModal(false)} 
               className="w-full bg-slate-900 text-white py-4 rounded-2xl font-bold hover:bg-slate-800 transition-all shadow-lg"
             >
-              Começar a Pintar
+              Start Painting
             </button>
           </div>
         </div>
